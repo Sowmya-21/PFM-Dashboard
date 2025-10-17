@@ -21,6 +21,9 @@ const authRoutes = require("./routes/auth");
 console.log("✅ Auth routes file loaded successfully");
 app.use("/api/auth", authRoutes);
 
+const userRoutes = require("./routes/users");
+app.use("/api/users", userRoutes);
+
 // Import your User model
 const User = require("./models/User");
 
