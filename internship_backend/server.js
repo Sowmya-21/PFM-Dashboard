@@ -6,11 +6,20 @@ require("dotenv").config(); // Load .env
 const app = express();
 app.use(express.json());
 
+app.use((req, res, next) => {
+  console.log(new Date().toISOString(), req.method, req.originalUrl);
+  next();
+});
+
 // ✅ CORS setup
 app.use(cors({
   origin: ["http://localhost:3000", "http://127.0.0.1:3000"],
   credentials: true,
 }));
+
+const authRoutes = require("./routes/auth");
+console.log("✅ Auth routes file loaded successfully");
+app.use("/api/auth", authRoutes);
 
 // Import your User model
 const User = require("./models/User");
@@ -28,6 +37,9 @@ db.on('connected', () => console.log('✅ Mongoose connected to DB'));
 db.on('error', err => console.error('❌ Mongoose connection error:', err));
 db.on('disconnected', () => console.warn('⚠️ Mongoose disconnected'));
 
+
+
+
 // Routes
 app.get("/", (req, res) => {
   console.log("✅ GET / route hit");
@@ -40,18 +52,7 @@ app.get('/health', (req, res) => {
   res.json({ ok: state === 1, readyState: state });
 });
 
-// Register route
-app.post("/register", async (req, res) => {
-  try {
-    const { username, email, password } = req.body;
-    const user = new User({ username, email, password });
-    await user.save();
-    res.status(201).json({ message: "User registered successfully!" });
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: "Registration failed" });
-  }
-});
+
 
 // Start server
 const PORT = process.env.PORT || 5000;
