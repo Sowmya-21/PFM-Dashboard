@@ -1,24 +1,22 @@
 const mongoose = require("mongoose");
 
-const AccountSchema = new mongoose.Schema({
-  user: {
-    type: mongoose.Schema.Types.ObjectId, // Reference to a user
+const accountSchema = new mongoose.Schema({
+  userId: {
+    type: mongoose.Schema.Types.ObjectId,
     ref: "User",
-    required: true
+    required: true,
   },
-  accountType: {
-    type: String,
-    enum: ["savings", "current"],  // Only savings or current allowed
-    default: "savings"
+  accountId: { type: String, required: true }, // from Plaid
+  name: { type: String },
+  mask: { type: String }, // last 4 digits
+  subtype: { type: String },
+  type: { type: String },
+  balances: {
+    available: { type: Number },
+    current: { type: Number },
+    limit: { type: Number },
   },
-  balance: {
-    type: Number,
-    default: 0
-  },
-  createdAt: {
-    type: Date,
-    default: Date.now
-  }
+  institution: { type: String }, // e.g. "Chase Bank"
 });
 
-module.exports = mongoose.model("Account", AccountSchema);
+module.exports = mongoose.model("Account", accountSchema);
