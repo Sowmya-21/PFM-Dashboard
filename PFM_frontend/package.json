@@ -9,15 +9,16 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "react": "^19.2.0",
-    "react-dom": "^19.2.0",
-    "react-plaid-link": "^4.1.1",
     "chart.js": "^4.4.3",
-    "react-chartjs-2": "^5.2.0"
+    "react": "^19.2.0",
+    "react-chartjs-2": "^5.2.0",
+    "react-dom": "^19.2.0",
+    "react-plaid-link": "^4.1.1"
   },
   "devDependencies": {
     "@types/node": "^22.14.0",
     "@vitejs/plugin-react": "^5.0.0",
+    "tailwindcss": "^4.1.15",
     "typescript": "~5.8.2",
     "vite": "^6.2.0"
   }
