@@ -1,17 +1,63 @@
-import React from 'react';
-import type { Account } from '../../types';
-import AccountCard from './AccountCard';
+import React, { useState, useEffect } from 'react';
 import InfoCard from './InfoCard';
 import UpcomingBills from './UpcomingBills';
 import PlaidLinkButton from './PlaidLinkButton';
 
-const mockAccounts: Account[] = [
-  { id: 'acc1', name: 'Chase Checking', mask: '0123', type: 'depository', subtype: 'checking', balance: 5420.11, currency: 'USD' },
-  { id: 'acc2', name: 'Chase Freedom Unlimited', mask: '4567', type: 'credit', subtype: 'credit card', balance: -780.50, currency: 'USD' },
-  { id: 'acc3', name: 'Vanguard Brokerage', mask: '8901', type: 'investment', subtype: 'brokerage', balance: 112030.89, currency: 'USD' },
-];
+interface PlaidAccount {
+  account_id: string;
+  name: string;
+  balances: {
+    available: number;
+    current: number;
+    limit?: number;
+    iso_currency_code: string;
+  };
+  type: string;
+  mask?: string;
+}
 
 const DashboardPage: React.FC = () => {
+  const [linkedAccounts, setLinkedAccounts] = useState<PlaidAccount[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  // Fetch accounts on component mount
+  useEffect(() => {
+    fetchAccounts();
+  }, []);
+
+  const fetchAccounts = async () => {
+    const token = localStorage.getItem('token');
+
+    if (!token) {
+      console.error('No auth token found');
+      setLoading(false);
+      return;
+    }
+
+    try {
+      const res = await fetch('http://localhost:5000/api/plaid/accounts', {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+      });
+
+      if (res.ok) {
+        const data = await res.json();
+        setLinkedAccounts(data);
+      } else {
+        console.error('Failed to fetch accounts');
+      }
+    } catch (error) {
+      console.error('Error fetching accounts:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleAccountsLinked = (accounts: PlaidAccount[]) => {
+    setLinkedAccounts(accounts);
+  };
+
   return (
     <div className="space-y-8">
       <div className="flex justify-between items-center">
@@ -19,7 +65,7 @@ const DashboardPage: React.FC = () => {
           <h2 className="text-3xl font-bold text-gray-900 dark:text-white">Welcome Back!</h2>
           <p className="text-gray-500 dark:text-gray-400 mt-1">Here's your financial overview for today.</p>
         </div>
-        <PlaidLinkButton />
+        <PlaidLinkButton onAccountsLinked={handleAccountsLinked} />
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -32,13 +78,39 @@ const DashboardPage: React.FC = () => {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2 space-y-6">
           <h3 className="text-xl font-semibold text-gray-900 dark:text-white">Your Accounts</h3>
-          {mockAccounts.map(account => (
-            <AccountCard key={account.id} account={account} />
-          ))}
+
+          {loading ? (
+            <div className="p-8 bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 text-center">
+              <p className="text-gray-500 dark:text-gray-400">Loading accounts...</p>
+            </div>
+          ) : linkedAccounts.length > 0 ? (
+            linkedAccounts.map(acc => (
+              <div key={acc.account_id} className="p-6 bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700">
+                <div className="flex justify-between items-start">
+                  <div>
+                    <h4 className="text-lg font-semibold text-gray-900 dark:text-white">{acc.name}</h4>
+                    <p className="text-sm text-gray-500 dark:text-gray-400 capitalize">{acc.type}</p>
+                    {acc.mask && <p className="text-sm text-gray-500 dark:text-gray-400">•••• {acc.mask}</p>}
+                  </div>
+                  <div className="text-right">
+                    <p className="text-2xl font-bold text-gray-900 dark:text-white">
+                      ${acc.balances.current.toFixed(2)}
+                    </p>
+                    <p className="text-sm text-gray-500 dark:text-gray-400">{acc.balances.iso_currency_code}</p>
+                  </div>
+                </div>
+              </div>
+            ))
+          ) : (
+            <div className="p-8 bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 text-center">
+              <p className="text-gray-500 dark:text-gray-400">No accounts linked yet. Click "Connect a bank account" to get started.</p>
+            </div>
+          )}
         </div>
+
         <div className="space-y-6">
-           <h3 className="text-xl font-semibold text-gray-900 dark:text-white">Upcoming Bills</h3>
-            <UpcomingBills />
+          <h3 className="text-xl font-semibold text-gray-900 dark:text-white">Upcoming Bills</h3>
+          <UpcomingBills />
         </div>
       </div>
     </div>
