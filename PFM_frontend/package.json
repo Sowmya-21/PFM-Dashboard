@@ -10,12 +10,14 @@
   },
   "dependencies": {
     "chart.js": "^4.4.3",
+    "jwt-decode": "^4.0.0",
     "react": "^19.2.0",
     "react-chartjs-2": "^5.2.0",
     "react-dom": "^19.2.0",
     "react-plaid-link": "^4.1.1"
   },
   "devDependencies": {
+    "@types/jwt-decode": "^2.2.1",
     "@types/node": "^22.14.0",
     "@vitejs/plugin-react": "^5.0.0",
     "tailwindcss": "^4.1.15",
