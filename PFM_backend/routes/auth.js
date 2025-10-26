@@ -51,6 +51,7 @@ router.post("/login", async (req, res) => {
 
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: "1h" });
 
+    // ✅ Send JWT to frontend
     res.status(200).json({ message: "Login successful", token });
   } catch (err) {
     console.error("❌ Login Error:", err);
@@ -58,4 +59,4 @@ router.post("/login", async (req, res) => {
   }
 });
 
-export default router; // ✅ Only this is needed
+export default router;

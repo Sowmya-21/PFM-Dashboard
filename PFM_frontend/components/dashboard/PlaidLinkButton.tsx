@@ -15,18 +15,40 @@ interface Account {
   mask?: string;
 }
 
-const PlaidLinkButton: React.FC = () => {
+interface PlaidLinkButtonProps {
+  onAccountsLinked?: (accounts: Account[]) => void;
+}
+
+const PlaidLinkButton: React.FC<PlaidLinkButtonProps> = ({ onAccountsLinked }) => {
   const [linkToken, setLinkToken] = useState('');
-  const [accounts, setAccounts] = useState<Account[]>([]);
   const [loading, setLoading] = useState(false);
+
+  // Get token from localStorage
+  const getAuthToken = () => localStorage.getItem('token');
 
   // 1️⃣ Fetch the link token from backend
   useEffect(() => {
+    const token = getAuthToken();
+
+    if (!token) {
+      console.error('No auth token found');
+      return;
+    }
+
     fetch('http://localhost:5000/api/plaid/create_link_token', {
       method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      },
     })
       .then(res => res.json())
-      .then(data => setLinkToken(data.link_token))
+      .then(data => {
+        if (data.link_token) {
+          setLinkToken(data.link_token);
+        } else {
+          console.error('No link token received:', data);
+        }
+      })
       .catch(err => console.error('Error fetching link token:', err));
   }, []);
 
@@ -35,10 +57,15 @@ const PlaidLinkButton: React.FC = () => {
     console.log('Plaid success! Public token:', public_token);
     setLoading(true);
 
+    const token = getAuthToken();
+
     // Exchange public_token for access_token
     fetch('http://localhost:5000/api/plaid/exchange_public_token', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+      },
       body: JSON.stringify({ public_token }),
     })
       .then(res => res.json())
@@ -46,11 +73,17 @@ const PlaidLinkButton: React.FC = () => {
         console.log('Token exchange response:', data);
 
         // Fetch accounts after successful token exchange
-        fetch('http://localhost:5000/api/plaid/accounts')
+        fetch('http://localhost:5000/api/plaid/accounts', {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+          },
+        })
           .then(res => res.json())
           .then(data => {
             console.log('Accounts fetched:', data);
-            setAccounts(data); // ✅ Save accounts to state
+            if (onAccountsLinked) {
+              onAccountsLinked(data);
+            }
           })
           .catch(err => console.error('Error fetching accounts:', err))
           .finally(() => setLoading(false));
@@ -59,33 +92,19 @@ const PlaidLinkButton: React.FC = () => {
         console.error('Token exchange error:', err);
         setLoading(false);
       });
-  }, []);
+  }, [onAccountsLinked]);
 
   // 3️⃣ Initialize Plaid link
   const { open, ready } = usePlaidLink({ token: linkToken, onSuccess });
 
   return (
-    <div>
-      <Button onClick={() => open()} disabled={!ready || !linkToken || loading}>
-        {loading ? 'Loading...' : 'Connect a bank account'}
-      </Button>
-
-      {/* 4️⃣ Display sandbox accounts */}
-      {accounts.length > 0 && (
-        <div className="mt-4">
-          <h2 className="text-lg font-semibold mb-2">Linked Accounts:</h2>
-          <ul>
-            {accounts.map(acc => (
-              <li key={acc.account_id} className="p-2 border rounded mb-2">
-                <p><strong>{acc.name}</strong> ({acc.type})</p>
-                <p>Balance: ${acc.balances.current.toFixed(2)}</p>
-                {acc.mask && <p>Account Mask: {acc.mask}</p>}
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
-    </div>
+    <Button 
+      onClick={() => open()} 
+      disabled={!ready || !linkToken || loading}
+      className="bg-teal-500 hover:bg-teal-600 text-white px-6 py-2 rounded-lg font-semibold transition"
+    >
+      {loading ? 'Loading...' : 'Connect a bank account'}
+    </Button>
   );
 };
 

@@ -26,8 +26,9 @@ const AuthPage: React.FC<Props> = ({ switchToSignup }) => {
       const data = await res.json();
 
       if (res.ok) {
-        localStorage.setItem("token", data.token);
-        login();
+        // ✅ Pass the token to login function
+        login(data.token);
+        alert("Login successful!");
       } else {
         alert(data.error || "Login failed");
       }
@@ -54,7 +55,6 @@ const AuthPage: React.FC<Props> = ({ switchToSignup }) => {
             Sign In
           </h2>
 
-          {/* Social Buttons (you can remove if not needed) */}
           <div className="flex justify-center gap-4 mb-4">
             <button className="border border-gray-300 dark:border-gray-600 rounded-full p-2 hover:bg-gray-100 dark:hover:bg-gray-700 transition">
               <i className="fab fa-facebook-f text-gray-600 dark:text-gray-300"></i>
