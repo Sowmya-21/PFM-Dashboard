@@ -23,7 +23,7 @@ const features = [
   { title: "Set Budgets", desc: "Stay on top of your finances by setting smart budgets.", icon: Target },
   { title: "View Reports", desc: "Visualize your spending with clean analytics.", icon: BarChart3 },
   { title: "Sync Accounts", desc: "Connect multiple bank accounts securely.", icon: Link },
-  { title: "Smart Insights", desc: "AI-driven insights to help you save more.", icon: Lightbulb },
+  { title: "Smart Insights", desc: "Smart insights to help you save more.", icon: Lightbulb },
   { title: "Secure & Private", desc: "Your data stays safe with end-to-end encryption.", icon: ShieldCheck },
 ];
 
@@ -50,14 +50,15 @@ const LandingPage: React.FC<LandingPageProps> = ({ onLogin, onSignup }) => {
   return (
     <div className="font-poppins text-white overflow-hidden">
       {/* ====== NAVBAR ====== */}
-      <header 
+<header 
   className="fixed top-0 left-0 right-0 z-50 w-full flex justify-between items-center px-10 py-6 transition-all duration-300"
   style={{
-    backgroundColor: `rgba(15, 75, 163, ${scrollOpacity})`,
+    backgroundColor: `rgba(3, 28, 78, ${scrollOpacity})`,
     backdropFilter: scrollOpacity < 0.9 ? 'blur(8px)' : 'none',
-    boxShadow: scrollOpacity > 0.5 ? '0 4px 6px rgba(0, 0, 0, 0.1)' : 'none'
+    boxShadow: scrollOpacity > 0.5 ? '0 4px 6px rgba(0, 0, 0, 0.2)' : 'none'
   }}
 >
+
   <h1 className="text-2xl font-bold text-white">FinancePal</h1>
 
   <div className="flex items-center space-x-8">
@@ -86,11 +87,13 @@ const LandingPage: React.FC<LandingPageProps> = ({ onLogin, onSignup }) => {
   </div>
 </header>
 
-      {/* ====== HERO SECTION ====== */}
-      <div
-        id="home"
-        className="relative min-h-screen flex flex-col justify-center items-center overflow-hidden bg-gradient-to-br from-[#0a2e87] via-[#104fc8] to-[#02143d]"
-      >
+     {/* ====== HERO SECTION ====== */}
+<div
+  id="home"
+  className="relative min-h-screen flex flex-col justify-center items-center overflow-hidden 
+  bg-gradient-to-br from-[#021e4a] via-[#032e73] to-[#010c1f]"
+>
+
         {/* Animated gradient overlay */}
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_30%,rgba(255,255,255,0.1)_0%,transparent_70%)] animate-pulse"></div>
 
@@ -193,9 +196,10 @@ const LandingPage: React.FC<LandingPageProps> = ({ onLogin, onSignup }) => {
       {/* ====== CONTACT SECTION ====== */}
       <section id="contact" className="bg-[#f0f4ff] text-[#0f4ba3] py-20 text-center px-6">
         <h3 className="text-3xl font-bold mb-6">Get in Touch</h3>
-        <p className="text-gray-700 max-w-xl mx-auto mb-8">
-          Have questions or feedback? Reach out to us and we'll get back to you as soon as possible.
-        </p>
+       <p className="text-gray-700 max-w-xl mx-auto mb-8 whitespace-nowrap">
+  Have questions or feedback? Reach out to us and we'll get back to you as soon as possible.
+</p>
+
         <Button className="bg-[#0f4ba3] text-white hover:bg-[#092f63] px-8 py-3 rounded-full">
           Contact Us
         </Button>

@@ -40,7 +40,7 @@ const SignupPage: React.FC<Props> = ({ switchToLogin }) => {
       <div className="flex w-[900px] h-[600px] max-w-6xl rounded-2xl shadow-2xl overflow-hidden bg-white dark:bg-gray-800">
         {/* Left Side - Sign Up Form */}
         <div className="flex w-full md:w-1/2 flex-col justify-center p-10 animate-slideInLeft">
-          <h2 className="text-3xl font-bold text-center text-blue-600 dark:text-blue-400 mb-6">
+          <h2 className="text-3xl font-bold text-center text-[#0b2f7b] dark:text-[#3b82f6] mb-6">
             Create Account
           </h2>
 
@@ -62,7 +62,7 @@ const SignupPage: React.FC<Props> = ({ switchToLogin }) => {
             <Input id="password" label="Password" type="password" required />
             <Button
               type="submit"
-              className="w-full bg-blue-500 hover:bg-blue-600 text-white rounded-full py-3 transition duration-300 font-semibold"
+              className="w-full bg-[#0b2f7b] hover:bg-[#0a2563] text-white rounded-full py-3 transition duration-300 font-semibold"
             >
               SIGN UP
             </Button>
@@ -72,7 +72,7 @@ const SignupPage: React.FC<Props> = ({ switchToLogin }) => {
             Already have an account?{' '}
             <button
               onClick={switchToLogin}
-              className="text-blue-600 hover:text-blue-700 font-semibold"
+              className="text-[#0b2f7b] hover:text-[#0a2563] font-semibold"
             >
               Sign in
             </button>
@@ -80,7 +80,7 @@ const SignupPage: React.FC<Props> = ({ switchToLogin }) => {
         </div>
 
         {/* Right Side - Welcome Panel */}
-        <div className="hidden md:flex w-1/2 flex-col justify-center items-center bg-gradient-to-br from-blue-500 to-indigo-500 text-white p-10 animate-slideInRight">
+        <div className="hidden md:flex w-1/2 flex-col justify-center items-center bg-gradient-to-br from-[#0b2f7b] to-[#1b1f5c] text-white p-10 animate-slideInRight">
           <h2 className="text-3xl font-bold mb-4">Hello, Friend!</h2>
           <p className="text-center text-white/90 mb-6">
             Enter your personal details and start your journey with us.

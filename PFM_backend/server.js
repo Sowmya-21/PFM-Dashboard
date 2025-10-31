@@ -6,6 +6,7 @@ import dotenv from "dotenv";
 import plaidRoutes from "./routes/plaidRoutes.js";
 import authRoutes from "./routes/auth.js";
 import userRoutes from "./routes/users.js";
+import goalsRoutes from "./routes/goals.js"; // ✅ Newly added route
 import User from "./models/User.js";
 
 dotenv.config(); // Load .env
@@ -28,10 +29,11 @@ app.use(
 );
 
 // ✅ Routes
-console.log("✅ Auth routes file loaded successfully");
+console.log("✅ Routes initialized successfully");
 app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/plaid", plaidRoutes);
+app.use("/api/goals", goalsRoutes); // ✅ Added Goals API route
 
 // ✅ Debug: Check if Mongo URI is loaded
 console.log("Mongo URI:", process.env.MONGO_URI);
