@@ -25,11 +25,13 @@ const AuthPage: React.FC<Props> = ({ switchToSignup }) => {
 
       const data = await res.json();
 
-      if (res.ok) {
-        // ✅ Pass the token to login function
-        login(data.token);
-        alert("Login successful!");
-      } else {
+     if (res.ok) {
+  login(data.token);
+  if (data.username) {
+    localStorage.setItem("username", data.username);
+  }
+  alert("Login successful!");
+} else {
         alert(data.error || "Login failed");
       }
     } catch (err) {
@@ -42,7 +44,7 @@ const AuthPage: React.FC<Props> = ({ switchToSignup }) => {
     <div className="flex min-h-screen items-center justify-center bg-gray-100 dark:bg-gray-900">
       <div className="flex w-[900px] h-[600px] max-w-6xl rounded-2xl shadow-2xl overflow-hidden bg-white dark:bg-gray-800">
         {/* Left Side - Welcome Panel */}
-        <div className="hidden md:flex w-1/2 flex-col justify-center items-center bg-gradient-to-br from-blue-500 to-indigo-500 text-white p-10 animate-slideInLeft">
+        <div className="hidden md:flex w-1/2 flex-col justify-center items-center bg-gradient-to-br from-[#0A2E87] to-[#032E73] text-white p-10 animate-slideInLeft">
           <h2 className="text-3xl font-bold mb-4">Welcome Back!</h2>
           <p className="text-center text-white/90 mb-6">
             To keep connected with us, please login with your personal info.
@@ -51,7 +53,7 @@ const AuthPage: React.FC<Props> = ({ switchToSignup }) => {
 
         {/* Right Side - Sign In Form */}
         <div className="flex w-full md:w-1/2 flex-col justify-center p-10 animate-slideInRight">
-          <h2 className="text-3xl font-bold text-center text-blue-600 dark:text-blue-400 mb-6">
+          <h2 className="text-3xl font-bold text-center text-[#0A2E87] dark:text-[#0A2E87] mb-6">
             Sign In
           </h2>
 
@@ -72,7 +74,7 @@ const AuthPage: React.FC<Props> = ({ switchToSignup }) => {
             <Input id="password" label="Password" type="password" required />
             <Button
               type="submit"
-              className="w-full bg-blue-500 hover:bg-blue-600 text-white rounded-full py-3 transition duration-300 font-semibold"
+              className="w-full bg-[#0A2E87] hover:bg-[#032E73] text-white rounded-full py-3 transition duration-300 font-semibold"
             >
               SIGN IN
             </Button>
@@ -82,7 +84,7 @@ const AuthPage: React.FC<Props> = ({ switchToSignup }) => {
             Don't have an account?{' '}
             <button
               onClick={switchToSignup}
-              className="text-blue-600 hover:text-blue-700 font-semibold"
+              className="text-[#0A2E87] hover:text-[#032E73] font-semibold"
             >
               Sign up
             </button>
