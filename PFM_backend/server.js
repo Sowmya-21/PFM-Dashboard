@@ -6,10 +6,11 @@ import dotenv from "dotenv";
 import plaidRoutes from "./routes/plaidRoutes.js";
 import authRoutes from "./routes/auth.js";
 import userRoutes from "./routes/users.js";
-import goalsRoutes from "./routes/goals.js"; // ✅ Newly added route
+import goalsRoutes from "./routes/goals.js";
+import transactionsRoutes from "./routes/transactions.js"; // ✅ NEW import
 import User from "./models/User.js";
 
-dotenv.config(); // Load .env
+dotenv.config(); // Load .env variables
 
 const app = express();
 app.use(express.json());
@@ -28,15 +29,16 @@ app.use(
   })
 );
 
-// ✅ Routes
+// ✅ Routes registration
 console.log("✅ Routes initialized successfully");
 app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/plaid", plaidRoutes);
-app.use("/api/goals", goalsRoutes); // ✅ Added Goals API route
+app.use("/api/goals", goalsRoutes);
+app.use("/api/transactions", transactionsRoutes); // ✅ NEW: Transactions route added
 
 // ✅ Debug: Check if Mongo URI is loaded
-console.log("Mongo URI:", process.env.MONGO_URI);
+console.log("Mongo URI:", process.env.MONGO_URI || "(missing)");
 
 // ✅ Connect to MongoDB
 mongoose

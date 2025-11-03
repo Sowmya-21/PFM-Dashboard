@@ -9,12 +9,13 @@ export interface Account {
 }
 
 export interface Transaction {
-  id: string;
+  _id?: string;
+  id?: string;
   description: string;
   amount: number;
   date: string;
   category: string;
-  type: 'income' | 'expense';
+  type: "income" | "expense";
 }
 
 export interface Budget {
@@ -36,16 +37,16 @@ export interface Investment {
 }
 
 export interface Goal {
-    id: string;
-    name: string;
-    targetAmount: number;
-    currentAmount: number;
-    deadline: string;
+  id: string;
+  name: string;
+  targetAmount: number;
+  currentAmount: number;
+  deadline: string;
 }
 
 export interface Bill {
-    id: string;
-    name: string;
-    amount: number;
-    dueDate: string;
+  id: string;
+  name: string;
+  amount: number;
+  dueDate: string;
 }
