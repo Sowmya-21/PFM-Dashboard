@@ -17,3 +17,9 @@ export const createTransaction = async (transactionData: any, token: string) => 
   });
   return res.data;
 };
+export const deleteTransaction = async (id: string, token: string) => {
+  const res = await axios.delete(`http://localhost:5000/api/transactions/${id}`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  return res.data;
+};

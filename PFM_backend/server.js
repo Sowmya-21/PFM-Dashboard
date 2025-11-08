@@ -7,7 +7,9 @@ import plaidRoutes from "./routes/plaidRoutes.js";
 import authRoutes from "./routes/auth.js";
 import userRoutes from "./routes/users.js";
 import goalsRoutes from "./routes/goals.js";
+import budgetsRoutes from "./routes/budgets.js";
 import transactionsRoutes from "./routes/transactions.js"; // ✅ NEW import
+
 import User from "./models/User.js";
 
 dotenv.config(); // Load .env variables
@@ -35,7 +37,8 @@ app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/plaid", plaidRoutes);
 app.use("/api/goals", goalsRoutes);
-app.use("/api/transactions", transactionsRoutes); // ✅ NEW: Transactions route added
+app.use("/api/transactions", transactionsRoutes);
+app.use("/api/budgets", budgetsRoutes); // ✅ NEW: Budgets route added
 
 // ✅ Debug: Check if Mongo URI is loaded
 console.log("Mongo URI:", process.env.MONGO_URI || "(missing)");

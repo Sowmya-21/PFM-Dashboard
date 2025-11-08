@@ -7,7 +7,7 @@ const authMiddleware = (req, res, next) => {
       return res.status(401).json({ error: "No token provided, authorization denied" });
 
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    req.user = decoded; // decoded contains { id, email }
+    req.user = decoded; // decoded = { id: user._id }
     next();
   } catch (error) {
     console.error("❌ Auth middleware error:", error);
